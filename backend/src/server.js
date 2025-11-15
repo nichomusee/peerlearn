@@ -13,9 +13,9 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
-// Enable CORS for frontend origin
+// Enable CORS for frontend origin (allow all localhost ports during dev)
 app.use(cors({
-    origin: process.env.ALLOWED_ORIGIN,
+    origin: /^http:\/\/localhost/,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 

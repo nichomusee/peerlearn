@@ -5,6 +5,19 @@ const Note = require("../models/Notes");
 
 const router = express.Router();
 
+// GET /api/notes — Fetch all notes (optionally filter by userId)
+router.get("/", async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+    const filter = userId ? { userId } : {};
+    const notes = await Note.find(filter).sort({ createdAt: -1 });
+    res.json(notes);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong fetching notes." });
+  }
+});
+
 // POST /api/notes — Create a new note
 router.post("/", async (req, res) => {
   const { title, content, userId } = req.body;
