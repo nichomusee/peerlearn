@@ -1,4 +1,3 @@
-// src/components/ui/NewNoteDialog.jsx
 import { useState } from "react";
 import {
   Dialog,
@@ -11,7 +10,7 @@ import { Input } from "./input";
 import { Textarea } from "./textarea";
 
 export default function NewNoteDialog({ onCreate }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // ✅ added to control dialog
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -20,11 +19,11 @@ export default function NewNoteDialog({ onCreate }) {
     onCreate({ title, content });
     setTitle("");
     setContent("");
-    setOpen(false);
+    setOpen(false); // ✅ closes dialog after save
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}> {/* ✅ controlled dialog */}
       <DialogTrigger asChild>
         <Button>Add Note</Button>
       </DialogTrigger>
@@ -46,7 +45,7 @@ export default function NewNoteDialog({ onCreate }) {
         </div>
 
         <div className="mt-6 flex justify-end space-x-2">
-          <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button> {/* ✅ now works */}
           <Button onClick={handleSubmit}>Save</Button>
         </div>
       </DialogContent>

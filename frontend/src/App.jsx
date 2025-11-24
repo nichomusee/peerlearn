@@ -1,30 +1,47 @@
-// src/App.jsx
-import Dashboard from "./pages/dashboard";
+import { Routes, Route } from "react-router-dom";
+import { SignIn, SignUp, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
-  // Simulate a user for frontend-only testing
-  const fakeUserId = import.meta.env.VITE_FAKE_USER_ID || "";
-
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header section */}
-      <header className="bg-white border-b">
-        <div className="max-w-5xl px-4 flex items-center justify-between mx-auto h-16">
-          <h1 className="text-2xl font-bold">PeerLearn Dashboard</h1>
-          <div className="text-slate-600 text-sm">
-            MERN Stack • MongoDB + Express + React + Tailwind + Radix UI<br />
-            user: <span className="font-mono">{fakeUserId || "anonymous"}</span>
-          </div>
-        </div>
-      </header>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/sign-in" element={<SignIn redirectUrl="/dashboard" />} />
+      <Route path="/sign-up" element={<SignUp redirectUrl="/dashboard" />} />
+      <Route
+        path="/dashboard"
+        element={
+          <>
+            <header className="bg-white border-b">
+              <div className="max-w-5xl p-4 flex items-center justify-between mx-auto">
+                <div>
+                  <h1 className="text-2xl font-bold">PeerLearn Dashboard</h1>
+                  <p className="text-slate-600 text-sm">
+                    MERN Stack • MongoDB + Express + React + Tailwind + Radix UI
+                  </p>
+                </div>
+                <div>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                </div>
+              </div>
+            </header>
 
-      {/* Main content area */}
-      <main className="py-6">
-        <div className="max-w-5xl mx-auto px-4">
-          {/* Load the dashboard and pass the user ID */}
-          <Dashboard frontendUserId={fakeUserId} />
-        </div>
-      </main>
-    </div>
+            <main className="py-10">
+              <div className="max-w-5xl mx-auto text-center">
+                <SignedIn>
+                  <Dashboard />
+                </SignedIn>
+                <SignedOut>
+                  <p className="text-slate-600">Please sign in to view your notes.</p>
+                </SignedOut>
+              </div>
+            </main>
+          </>
+        }
+      />
+    </Routes>
   );
 }
